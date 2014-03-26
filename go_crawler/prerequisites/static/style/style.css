@@ -1,0 +1,58 @@
+html{
+  width:100%;
+  height:100%;
+}
+body{
+  margin: 0;
+  padding: 0;
+  background: url("escheresque_ste.png") repeat;
+}
+
+#container{
+  margin: 40px;
+  box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.69);
+  border-radius: 5px 5px 4px 4px;
+  -moz-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.69);
+  -webkit-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.69);
+  background:url("project_papper.png") repeat;
+}
+
+#container canvas {
+  border-radius:0 0 4px 4px;
+}
+
+#dashboard{
+  height:65px;
+  background-color: #444;
+  border-radius:4px 4px 0 0;
+  padding:0;
+}
+
+#logo_text {
+  display: inline-block;
+  color: #e7e7e7;
+  margin-left: 25px;
+  margin-top: 10px;
+  font-size: 30px;
+  font-family: "The Girl Next Door";
+}
+
+.logo_icon_running {
+  position: relative;
+  float: left;
+  width:55px;
+  height:32px;
+  left: 13px;
+  top: 16px;
+  background:url(logo.png) 0 0 no-repeat;
+}
+
+.logo_icon_stopped {
+  position: relative;
+  float: left;
+  width:55px;
+  height:32px;
+  left: 13px;
+  top: 16px;
+  background:url(logo_stopped.png) 0 0 no-repeat;
+}
