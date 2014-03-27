@@ -1,0 +1,344 @@
+Go в гостях у DevOps40
+
+27 марта 2014 г.
+
+Павел Коротков
+Дмитрий Бондаренко
+
+* 
+.image frontpage.png
+
+* О нас
+
+- Goding с момента публичного релиза
+- 11 проектов на Go в продакшен (с 2010 г.)
+- Принимаем активное участие в жизни сообщества
+- Публичный проект [[https://github.com/cihub/seelog][seelog]] (2012 г.)
+
+* Google Trends (golang)
+.image google_trends_1.png 570 650
+
+* Google Trends (golang + big data)
+.image google_trends_2.png 570 650
+
+* Go: про что это?
+
+- Производительность
+- Асинхронность
+- Простота
+- FUN!
+
+* Go: что внутри?
+
+- Совмещение процедурной и ООП парадигм
+- Поддержка асинхронного программирования на уровне языка
+- Интерфейсы и утиная типизация
+- Строгая статическая типизация (kein Angst!)
+- Компиляция со сборкой в нативные модули
+- Сборщик мусора
+
+* Go: что в комплекте?
+
+- Богатый инструментарий (`go/go` `tool`, `gofmt`, `godoc`, `gofix` и т.д.)
+- Встроенная система тестирования (с оценкой покрытия) кода (`go` `test`)
+- Менеджмент локальных и удаленных репозиториев кода (`go` `get`)
+
+* Go: что со скоростью компиляции?
+
+ $ ls -1 ./ | grep .go | wc -l
+ 1000
+ $ ( find ./ -name '*.go' -print0 | xargs -0 cat ) | wc -l
+ 211797
+ $ time go build
+
+ real 0m11.806s
+ user 0m10.793s
+ sys 0m0.892s
+
+Билд-сервер:
+
+- Intel(R) Core(TM) i7-4771 CPU @ 3.50GHz
+- 8 GB RAM
+- GNU/Linux 3.5.0-23-generic x86_64
+
+* 
+
+.image obama-not-bad.png 600 640
+
+* Go: немного истории
+
+- Начало разработки: 2007 г.
+- Авторы языка: Rob Pike ([[http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs][Plan 9]], [[http://en.wikipedia.org/wiki/Inferno_%28operating_system%29][Inferno]], [[http://en.wikipedia.org/wiki/Limbo_programming_language][Limbo]], [[http://en.wikipedia.org/wiki/UTF-8][UTF-8]]), Ken Thompson ([[http://en.wikipedia.org/wiki/B_%28programming_language%29][B language]], [[http://ru.wikipedia.org/wiki/UNIX][UNIX]]), Robert Griesemer ([[http://en.wikipedia.org/wiki/V8_%28JavaScript_engine%29][V8 JavaScript Engine]], [[http://en.wikipedia.org/wiki/Google_File_System][GFS]]), Russ Cox ([[http://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs][Plan 9]]), Ian Lance Taylor ([[http://en.wikipedia.org/wiki/GNU_Compiler_Collection][GCC]], [[http://en.wikipedia.org/wiki/Gold_%28linker%29][gold ELF linker]])
+- Публичный релиз: 10 ноября 2009 г.
+- Первый стабильный релиз: начало 2012 г.
+- Версия текущего стабильного релиза: Go1.2.1
+- 400+ контрибьютеров
+
+* 
+
+.image gopherbw.png 550 550
+
+* Go: предпосылки для создания
+
+Внутренние проблемы Google:
+ (1) Big hardware (более 1 000 000 машин)
+ (2) Big software (C++, Java, Python, миллионы строк кода, тысячи разработчиков)
+
+Проблемы, которые был призван решить Go:
+ — Медленные билды
+ — Неконтролируемые зависимости
+ — Унифицированное документирование кода
+ — Версионность ПО
+ — Автоматизация сборки ПО
+ — Кросс-компиляция
+
+* Go: поддерживаемые сегодня архитектуры и платформы
+
+- Linux (i386, AMD64, ARMv6+)
+- Darwin (i386, AMD64)
+- Windows (i386, AMD64)
+- FreeBSD (i386, AMD64)
+- NetBSD (i386, AMD64)
+- OpenBSD (i386, AMD64)
+- DragonFlyBSD (i386, AMD64)
+- Solaris (AMD64)
+- Plan9 (i386)
+
+* Go: пользователи
+
+- Google
+- Canonical
+- Bitly
+- BBC Worldwide
+- CloudFlare
+- Iron.io
+- Heroku
+- Github
+- 10gen
+- Tumblr
+- Zynga
+
+И многие [[https://code.google.com/p/go-wiki/wiki/GoUsers][другие]]
+
+* 
+
+.image gopher.jpg
+
+* Go: hello world!
+
+.play example1.go
+
+Cразу видно, что:
+
+- Код организован в пакеты (`package`), импортируются (`import`) пути к пакетам
+- Есть функции (`main`, `Println`) и локальные переменные (s)
+- Доступ к элементам пакета (`Println`) делается через точку
+- Нет сложностей с интернационализацией (UTF-8)
+- Нет* точек с запятой после выражений
+
+* Go: синтаксис
+
+_Syntax_is_not_important_... _unless_you_are_a_programmer_(c)_Rob_Pike_
+
+- 25 ключевых слов
+- Pascal/Modula-подобный синтаксис (имя перед типом) вместо C-подобного
+
+* Go: семантика (vs C)
+
+- Переменные
+
+ // Go                                                                    // C
+ var n int                                                                int n;
+ var b byte = 16                                                          unsigned char b = 16;
+ 
+- Структуры
+
+ type T struct { a, b int }                                               struct T { int a, b; }
+ 
+- Указатели и массивы
+
+ var a [10]float64                                                        long double a[10];
+ var p *int                                                               int *p;
+ var q [10]*int                                                           int *q[10];
+
+- Функции
+
+ func add(x, y float64) float64 {                                         double add(double x, y) {
+     return x + y                          		                              return x + y;
+ }                                                                        }
+
+* Go: указатели (vs C) 
+
+- C
+
+ struct S {
+ 	int a, b;
+ } __attribute__((packed));
+ ...
+ struct S s;
+ s.a = 4; s.b = 2;
+ unsigned char *sp = (unsigned char *)&s; // Допустимо (помня, что s - автоматическая переменная).
+ 
+ size_t i = 0, n = sizeof(s.a) + sizeof(s.b);
+ while (i < n) {
+ 	printf("%x", sp[i++]);
+ }
+
+- Go
+
+ type S struct { a, b int }
+ ...
+ var s S;
+ s.a = 4; s.b = 2
+ var p []byte = []byte(&s) // Недопустимо: cannot convert &s (type *S) to type []byte.
+
+* Go: что есть, по сравнению с C
+
+— Инициализация переменных по умолчанию, вывод типов
+— Новые встроенные типы - `string` и `bool`
+— Именованные типы и основные типы
+— Методы
+— Указатели для работы с управляемой памятью
+— Массивы
+— Слайсы (адаптированные указатели на массивы)
+— Ассоциативные массивы (hash-таблицы)
+— Правило указания области видимости вне пакета
+— Присваивание, ++, -- в виде операторов, а не выражений
+— Множественные присваивания и значения функцией
+
+*  Go: чего нет, по сравнению с C/C++
+
+— Заголовочные файлы
+— Классы, наследование, конструкторы
+— Перечисления, объединения
+— Арифметика управляемых указателей
+— Неявные числовые преобразования
+— Синонимичность (`typedef`)
+ 
+* А вот немного С, детка!
+
+ typedef char C;typedef long I;
+ typedef struct a{I t,r,d[3],p[2];}*A;
+ #define P printf
+ #define R return
+ #define V1(f) A f(w)A w;
+ #define V2(f) A f(a,w)A a,w;
+ #define DO(n,x) {I i=0,_n=(n);for(;i<_n;++i){x;}}
+ I *ma(n){R(I*)malloc(n*4);}mv(d,s,n)I *d,*s;{DO(n,d[i]=s[i]);}
+ tr(r,d)I *d;{I z=1;DO(r,z=z*d[i]);R z;}
+ A ga(t,r,d)I *d;{A z=(A)ma(5+tr(r,d));z->t=t,z->r=r,mv(z->d,d,r);R z;}
+ V1(iota){I n=*w->p;A z=ga(0,1,&n);DO(n,z->p[i]=i);R z;}
+ V2(plus){I r=w->r,*d=w->d,n=tr(r,d);A z=ga(0,r,d);
+  DO(n,z->p[i]=a->p[i]+w->p[i]);R z;}
+ V2(from){I r=w->r-1,*d=w->d+1,n=tr(r,d);
+  A z=ga(w->t,r,d);mv(z->p,w->p+(n**a->p),n);R z;}
+ V1(box){A z=ga(1,0,0);*z->p=(I)w;R z;}
+ V2(cat){I an=tr(a->r,a->d),wn=tr(w->r,w->d),n=an+wn;
+  A z=ga(w->t,1,&n);mv(z->p,a->p,an);mv(z->p+an,w->p,wn);R z;}
+ V2(find){}
+ V2(rsh){I r=a->r?*a->d:1,n=tr(r,a->p),wn=tr(w->r,w->d);
+  A z=ga(w->t,r,a->p);mv(z->p,w->p,wn=n>wn?wn:n);
+
+* И еще немного...
+
+ if(n-=wn)mv(z->p+wn,z->p,n);R z;}
+ V1(sha){A z=ga(0,1,&w->r);mv(z->p,w->d,w->r);R z;}
+ V1(id){R w;}V1(size){A z=ga(0,0,0);*z->p=w->r?*w->d:1;R z;}
+ pi(i){P("%d ",i);}nl(){P("\n");}
+ pr(w)A w;{I r=w->r,*d=w->d,n=tr(r,d);DO(r,pi(d[i]));nl();
+  if(w->t)DO(n,P("< ");pr(w->p[i]))else DO(n,pi(w->p[i]));nl();}
+
+ C vt[]="+{~<#,";
+ A(*vd[])()={0,plus,from,find,0,rsh,cat},
+  (*vm[])()={0,id,size,iota,box,sha,0};
+ I st[26]; qp(a){R a>='a'&&a<='z';}qv(a){R a<'a';}
+ A ex(e)I *e;{I a=*e;
+  if(qp(a)){if(e[1]=='=')R st[a-'a']=ex(e+2);a= st[ a-'a'];}
+  R qv(a)?(*vm[a])(ex(e+1)):e[1]?(*vd[e[1]])(a,ex(e+2)):(A)a;}
+ noun(c){A z;if(c<'0'||c>'9')R 0;z=ga(0,0,0);*z->p=c-'0';R z;}
+ verb(c){I i=0;for(;vt[i];)if(vt[i++]==c)R i;R 0;}
+ I *wd(s)C *s;{I a,n=strlen(s),*e=ma(n+1);C c;
+  DO(n,e[i]=(a=noun(c=s[i]))?a:(a=verb(c))?a:c);e[n]=0;R e;}
+
+ main(){C s[99];while(gets(s))pr(ex(wd(s)));}
+
+.link http://www.kuro5hin.org/story/2002/8/30/175531/763 Взято отсюда
+ 
+* Go: killer features
+
+- Гоурутины, каналы
+- Рейс-детектор
+- Интерфейсы, утиная типизация
+- Механизм отложенного выполнения defer
+- Cgo
+- Сборщик мусора
+
+* Go: гоурутины
+
+- Независимые эффективные потоки исполнения в общем адресном пространстве
+- Корутины, адаптированные для многопоточного исполнения
+- Под управлением M:N-планировщика (мультиплексирование над ОС-потоками)
+
+*Запустим* *парочку!*
+
+ go a()
+ go b(1, 2)
+ 
+* Каналы
+
+_Do_not_communicate_by_sharing_memory;_instead,_share_memory_by_communicating_(c)_Rob_Pike_
+
+Зачем?
+
+- Синхронизация
+- Обмен данными между гоурутинами
+
+.play ex_ch.go
+
+* Рейс-детектор
+
+ func parallelLoop() {
+     var wg sync.WaitGroup
+     wg.Add(5)
+     
+     for i := 0; i < 5; i++ {
+         go func() {
+             fmt.Println(i) // Хммм...
+             wg.Done()
+         }()
+     }
+     
+     wg.Wait()
+ }
+
+Проверим!
+
+ go build -race
+
+* Интерфейсы и утиная типизация
+
+_When_I_see_a_bird_that_walks_like_a_duck_and_swims_like_a_duck_and_quacks_like_a_duck,_I_call_that_bird_a_duck_(c)_
+
+.play ex_duck.go
+
+* Механизм отложенного выполнения defer
+
+.code example5.go
+
+* Cgo
+
+- Из Go-кода можно вызывать C-код
+- Из C-кода можно вызывать Go-код
+ 
+.play ex_pid.go
+
+* Куда смотреть дальше
+
+- Официальный туториал: http://tour.golang.org
+- Спецификация языка: http://golang.org/ref/spec
+- FAQ: http://tip.golang.org/doc/faq
+- Сотни внешних проектов: https://code.google.com/p/go-wiki/wiki/Projects
+  
+* Вопросы?
+
+.image rduck.jpg 550 800
